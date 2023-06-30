@@ -1,0 +1,49 @@
+logging:
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    org.mybatis: DEBUG
+    cn.hnist.sharo.mcinema.adminapi: DEBUG
+    cn.hnist.sharo.mcinema.userapi: DEBUG
+    web: TRACE
+    cn.hnist.sharo.mcinema: DEBUG
+    org.apache.shiro: ERROR
+
+
+spring:
+  # 邮件配置
+  mail:
+    protocol: smtp
+    default-encoding: utf-8
+    host: smtp.163.com
+    username: sharo9999@163.com
+    password: ODNUVVKIGSTCVNJO
+
+pagehelper:
+  support-methods-arguments: false
+
+mcinema:
+  redis-key:
+    captcha-admin: 'mcinema:captcha:admin:'
+    captcha-user: 'mcinema:captcha:user:'
+    session-admin: 'mcinema:session:admin:'
+    seat: 'mcinema:seat:'
+    ticket: 'mcinema:ticket:'
+  auth:
+    session-token-key: 'm-cinema-admin'
+    session-timeout: 86400 # 一天
+    token-key: 'm-cinema-user'
+    jwt:
+      secret-key: 'sharo.mcinema-user-token'
+      user-key: 'userId'
+      exp-time: 'PT6H' # 过期时间6小时
+      header: "{
+        alg: 'HS256',
+        typ: 'JWT'
+      }"
+      claims: "{
+        Issuer: 'mcinema',
+        Subject: 'sharo.mcinema users',
+        Audience: 'mUser'
+      }"
+

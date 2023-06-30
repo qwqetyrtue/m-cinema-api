@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: db,core,storage,userapi
+  messages:
+    encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+      enabled: true
+
+server:
+  port: 8082

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.hnist.sharo</groupId>
+        <artifactId>m-cinema</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <!--    打包方式-->
+    <packaging>jar</packaging>
+
+    <groupId>cn.hnist.sharo.m-cinema</groupId>
+    <artifactId>storage</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>storage</name>
+    <description>存储模块</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.hnist.sharo.m-cinema</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hnist.sharo.m-cinema</groupId>
+            <artifactId>db</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                    <layout>NONE</layout>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

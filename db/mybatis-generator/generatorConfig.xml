@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="mysqlgenerator" targetRuntime="MyBatis3">
+        <property name="autoDelimitKeywords" value="true"/>
+        <!--可以使用``包括字段名，避免字段名与sql保留字冲突报错 -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 自动生成toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <!-- 自动生成equals方法和hashcode方法 -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <!-- 生成可序列化pojo -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <!-- 非官方插件 https://github.com/itfsw/mybatis-generator-plugin -->
+        <!-- 查询单条数据插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectOneByExamplePlugin"/>
+        <!-- 查询结果选择性返回插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectSelectivePlugin"/>
+        <!-- Example Criteria 增强插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin"/>
+        <!-- 数据Model属性对应Column获取插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
+        <!-- 逻辑删除插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.LogicalDeletePlugin">
+            <!-- 这里配置的是全局逻辑删除列和逻辑删除值，当然在table中配置的值会覆盖该全局配置 -->
+            <!-- 逻辑删除列类型只能为数字、字符串或者布尔类型 -->
+            <property name="logicalDeleteColumn" value="deleted"/>
+            <!-- 逻辑删除-已删除值 -->
+            <property name="logicalDeleteValue" value="1"/>
+            <!-- 逻辑删除-未删除值 -->
+            <property name="logicalUnDeleteValue" value="0"/>
+        </plugin>
+        <!-- 逻辑删除插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.LogicalDeletePlugin">
+            <!-- 这里配置的是全局逻辑删除列和逻辑删除值，当然在table中配置的值会覆盖该全局配置 -->
+            <!-- 逻辑删除列类型只能为数字、字符串或者布尔类型 -->
+            <property name="logicalDeleteColumn" value="del_flag"/>
+            <!-- 未设置该属性或者该属性的值为null或者NULL,逻辑删除时会把该字段置为NULL。 -->
+            <property name="logicalDeleteValue" value="1"/>
+            <!-- 逻辑删除-未删除值 -->
+            <property name="logicalUnDeleteValue" value="0"/>
+        </plugin>
+
+
+        <!-- 注释 -->
+        <commentGenerator>
+            <!-- 不希望生成的注释中包含时间戳 -->
+            <property name="suppressDate" value="true"/>
+            <!-- 是否不生成注释 -->
+            <!--<property name="suppressAllComments" value="true"/> -->
+            <!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效 -->
+            <!--<property name="addRemarkComments" value="true"/> -->
+        </commentGenerator>
+
+        <!--数据库连接信息 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/m_cinema?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false&amp;nullCatalogMeansCurrent=true"
+                        userId="root" password="@REOL9999"/>
+
+        <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制 -->
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL
+            和 NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 指定自动生成的POJO置于哪个包下 -->
+        <javaModelGenerator targetPackage="cn.hnist.sharo.mcinema.db.pojo"
+                            targetProject="src/main/java"/>
+        <!-- 指定自动生成的mapper.xml置于哪个包下 xml和mapper.java放一起 -->
+        <sqlMapGenerator targetPackage="cn.hnist.sharo.mcinema.db.dao"
+                         targetProject="src/main/resources"/>
+        <!-- 指定自动生成的DAO接口置于哪个包下面 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="cn.hnist.sharo.mcinema.db.dao" targetProject="src/main/java"/>
+
+        <!--基本表-->
+        <!--用户-->
+        <table tableName="user_base">
+            <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+
+        <!--电影-->
+        <table tableName="film_base">
+            <generatedKey column="film_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!-- 电影上映时间 -->
+        <table tableName="film_release_time">
+            <generatedKey column="release_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+        <!-- 电影收藏表 -->
+        <table tableName="film_collect">
+
+        </table>
+
+        <!--影厅-->
+        <table tableName="hall_base">
+            <generatedKey column="hall_id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="seat_arrange" javaType="java.lang.Integer[][]"
+                            typeHandler="cn.hnist.sharo.mcinema.db.mybatis.MatrixTypeHandler"/>
+        </table>
+        <!--影厅座位-->
+        <table tableName="hall_seat">
+            <generatedKey column="seat_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--影厅座位分级-->
+        <table tableName="hall_seat_level">
+            <generatedKey column="seat_level_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+
+        <!--场次-->
+        <table tableName="scene_base">
+            <generatedKey column="scene_id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="seat_choose_arrange" javaType="java.lang.Integer[][]"
+                            typeHandler="cn.hnist.sharo.mcinema.db.mybatis.MatrixTypeHandler"/>
+            <columnOverride column="seat_arrange" javaType="java.lang.Integer[][]"
+                            typeHandler="cn.hnist.sharo.mcinema.db.mybatis.MatrixTypeHandler"/>
+        </table>
+
+
+        <!--票据-->
+        <table tableName="ticket_base">
+            <generatedKey column="ticket_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--折扣-->
+        <table tableName="discount_base">
+            <generatedKey column="discount_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!--文章-->
+        <table tableName="post_base">
+            <generatedKey column="post_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!--广告-->
+        <table tableName="advertising_base">
+            <generatedKey column="advertising_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!--评论-->
+        <table tableName="comment_base">
+            <generatedKey column="comment_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="comment_vote">
+        </table>
+
+        <!--管理表-->
+        <!--管理员-->
+        <table tableName="admin_base">
+            <generatedKey column="admin_id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="role_id_list" javaType="java.lang.Integer[]"
+                            typeHandler="cn.hnist.sharo.mcinema.db.mybatis.IntegerListTypeHandler"/>
+        </table>
+        <!--角色-->
+        <table tableName="admin_role">
+            <generatedKey column="role_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--权限-->
+        <table tableName="admin_permission">
+            <generatedKey column="permission_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+
+        <!--系统表-->
+        <!--登录记录-->
+        <table tableName="system_log">
+            <generatedKey column="log_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--系统常量-->
+        <table tableName="system_constant">
+            <generatedKey column="constant_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!-- 资源存储 -->
+        <table tableName="storage_base">
+            <generatedKey column="storage_id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!-- 视图 -->
+        <table tableName="v_scene">
+            <generatedKey column="scene_id" sqlStatement="Mysql" identity="true"/>
+            <columnOverride column="seat_choose_arrange" javaType="java.lang.Integer[][]"
+                            typeHandler="cn.hnist.sharo.mcinema.db.mybatis.MatrixTypeHandler"/>
+            <columnOverride column="seat_arrange" javaType="java.lang.Integer[][]"
+                            typeHandler="cn.hnist.sharo.mcinema.db.mybatis.MatrixTypeHandler"/>
+        </table>
+        <table tableName="v_ticket">
+            <generatedKey column="ticket_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="v_comment">
+            <generatedKey column="comment_id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

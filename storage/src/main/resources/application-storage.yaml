@@ -1,0 +1,29 @@
+mcinema:
+  storage:
+    active: local
+    # 本地对象存储配置信息
+    local:
+      storagePath: C:/Users/86180/IdeaProjects/m-cinema/storage/src/main/resources/storage
+      defaultType: TEMP
+      url: http://192.168.3.104:8083/resource/s
+    # 腾讯对象存储配置信息
+    # 请参考 https://cloud.tencent.com/document/product/436/6249
+    tencent:
+      secretId: AKIDgaHjweUaPzINBjroFhusb8XgaeS72wzr
+      secretKey: gCvaXDcolGWZgbP8emqfrnRUGdkbo09M
+      region: ap-shanghai
+      bucketName: shop-1304191424
+    # 阿里云对象存储配置信息
+    aliyun:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: LTAI4G7HnrCS9kyfvPoE9ADz
+      accessKeySecret: MQVv9csU3fory1PM8Ntir5vdVsU00Z
+      bucketName: daojiav1
+    qiniu:
+      endpoint: http://pd5cb6ulu.bkt.clouddn.com
+      accessKey: 111111
+      secretKey: xxxxxx
+      bucketName: daojia
+
+
+

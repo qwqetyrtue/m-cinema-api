@@ -1,0 +1,30 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+# swaggerUI knife4j配置
+knife4j:
+  enable: true
+  production: false
+  basic:
+    enable: true
+
+    username: admin
+    password: 12345
+  openapi:
+    title: M-Cinema
+    description: 电影院网上购票系统api文档
+    email: 1213564573@qq.com
+    concat: sharo
+    url: https://github.com/qwqetyrtue
+    version: v1.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      user:
+        group-name: 用户api文档
+        api-rule: package
+        api-rule-resources:
+          - cn.hnist.sharo.mcinema.userapi.controller
