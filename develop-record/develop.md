@@ -2,15 +2,37 @@
 
 ## 功能
 
-### 权限管理
-
-|      | 超级管理员 | 用户管理员 | 电影管理员 | 文章管理员 | 评论管理员 |
-| ---- | ---------- | ---------- | ---------- | ---------- | ---------- |
-|      |            |            |            |            |            |
-|      |            |            |            |            |            |
-|      |            |            |            |            |            |
-|      |            |            |            |            |            |
-|      |            |            |            |            |            |
++ 用户
+  - [x] 账号登录
+  - [x] 手机号验证码快速登录或注册
+  - [ ] 新用户登录提示修改个人信息
+  - [x] 首页板块
+  - [ ] 影评文章板块
+  - [x] 电影评论及回复
+  - [ ] 电影收藏
+  - [x] 电影板块
+  - [x] 个人中心板块
+  - [x] 搜索板块
+  - [x] 电影票务
+  - [ ] 优惠劵
+  - [ ] 我的影评文章
+  - [ ] 我的好友
+  - [ ] 我的获赞
+  - [ ] 站务公告，私信
+  - [ ] 等级系统
++ 管理员
+  - [x] 验证码登录
+  - [x] 权限、员工管理
+  - [x] 用户管理
+  - [x] 电影管理
+  - [x] 排场管理
+  - [x] 影厅管理
+  - [x] 座位管理
+  - [x] 广告管理
+  - [ ] 统计数据
+  - [ ] 后台log记录
+  - [ ] 文章管理
+  - [x] 评论管理
 
 ## API文档
 
@@ -440,18 +462,18 @@ flowchart LR
 >           // testBefore ......
 >       }
 >   }
->                               
+>                                   
 >   // 被切片的类
 >   class UserService(){
 >       public void test(){
->                                       
+>                                           
 >       }
 >   }
->                               
+>                                   
 >   // cglib生成的代理类
 >   class UserServiceProxy extend UserService {
 >       UserService target
->                                   
+>                                       
 >       @override
 >       public void test(){
 >           userTestAspect.testBefor();
@@ -791,6 +813,40 @@ return requiredLog.operation();
 
 + redis是基于内存操作的,是`单线程的`,CUP不是redis的性能瓶颈,机器的内存和网络带宽才是
 + redis是c语言编写的
+
+### 使用redis作为数据缓存
+
+#### 更新策略
+
+> 先修改数据库再修改缓存
+
+
+#### 注解API
+
++ @Cacheable
+
+  读取数据时使用,直接注解在service的读取方法上,在运行方法时,将先访问缓存,缓存中存在则直接返回,否则将访问数据库,在方法结束后,更新返回数据到缓存中
+
++ @CachePut
+
+  更新数据时使用,不会查询缓存是否存在,将在方法执行完后,将返回值更新到缓存中(先更新数据库,再更新缓存)
+
++ @CacheEvict
+
+  删除数据时使用,在方法执行后,删除缓存中对应的数据,设置allentriies后将删除全部的数据
+
+  ```java
+  // 删除 user:[userId] 对应的数据
+  @CacheEvict(value = "user")
+  public void delete(Long userId) {}
+  
+  // 删除 user:* 下的所有数据
+  @CacheEvict(value = "user",allEntries = true)
+  public void deleteAll() {}
+      
+  ```
+
+  
 
 ## 踩坑
 

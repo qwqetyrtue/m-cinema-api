@@ -96,9 +96,9 @@ public class AuthController {
             String verity = (String) redisUtil.hget(captchaRoot + UUID, "verify");
             String phone = (String) redisUtil.hget(captchaRoot + UUID, "phone");
             System.out.println(verity + " " + phone);
-            if(!rec.getCaptcha().equals(verity) || !rec.getPhone().equals(phone))
-                throw new UserException("验证码错误",ErrorEnum.WRONG_CAPTCHA);
-
+            if (!rec.getCaptcha().equals(verity) || !rec.getPhone().equals(phone))
+                throw new UserException("验证码错误", ErrorEnum.WRONG_CAPTCHA);
+            // 登录或注册
             UserBase user = uUserBaseService.oneByAuthOrInsert(phone);
             UserBase login = new UserBase();
             login.setUserId(user.getUserId());
