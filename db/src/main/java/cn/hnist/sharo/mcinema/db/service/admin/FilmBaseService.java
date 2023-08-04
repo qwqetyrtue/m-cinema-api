@@ -7,6 +7,7 @@ import cn.hnist.sharo.mcinema.db.dao.FilmBaseMapper;
 import cn.hnist.sharo.mcinema.db.pojo.FilmBase;
 import cn.hnist.sharo.mcinema.db.pojo.FilmBaseExample;
 import cn.hnist.sharo.mcinema.db.service.CRUDService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -97,12 +98,7 @@ public class FilmBaseService implements CRUDService<FilmBase, Long> {
         return filmMapper.selectByPrimaryKey(filmId);
     }
 
-    /**
-     * <h2>添加一部电影</h2>
-     *
-     * @param film 添加电影信息
-     * @return insert语句执行条数
-     */
+    @Override
     public int insert(FilmBase film) throws RuntimeException {
         return filmMapper.insertSelective(film);
     }

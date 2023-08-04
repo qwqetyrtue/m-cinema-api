@@ -87,7 +87,9 @@ public class U_TicketBaseService {
             //redis事务 预定票
             redisUtil.set(ticketRoot + userId + ":" + orderId, ticketArray, 5, TimeUnit.MINUTES);
             // redis事务 占座
-            redisUtil.set(seatRoot + sceneId + ":" + orderId, indexArray, 5, TimeUnit.MINUTES);
+            redisUtil.sSet(seatRoot + sceneId + ":" + orderId,indexArray.toArray());
+            redisUtil.expire(seatRoot + sceneId + ":" + orderId, 300);
+
             if (res.get() != hallSeats.size())
                 throw new DatabaseException("预定失败", ErrorEnum.FAILED_TRANSACTION);
             return res.get();
@@ -146,7 +148,7 @@ public class U_TicketBaseService {
             }
         }
         redisUtil.delete(ticketRoot + userId + ":" + orderId);
-        List<Integer> inHallSeatIndexList = (ArrayList<Integer>) redisUtil.get(seatRoot + list.get(0).getSceneId() + ":" + orderId);
+        ArrayList<Object> inHallSeatIndexList = new ArrayList<>(redisUtil.sGet(seatRoot + list.get(0).getSceneId() + ":" + orderId));
         SceneBase scene = sceneMapper.selectByPrimaryKey(list.get(0).getSceneId());
         Integer[][] seatChooseArrange = scene.getSeatChooseArrange();
         Integer[][] seatArrange = scene.getSeatArrange();

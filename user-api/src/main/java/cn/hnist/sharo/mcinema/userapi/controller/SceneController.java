@@ -7,6 +7,7 @@ import cn.hnist.sharo.mcinema.core.validator.OneBy;
 import cn.hnist.sharo.mcinema.db.pojo.VScene;
 import cn.hnist.sharo.mcinema.db.service.user.U_SceneBaseService;
 import cn.hnist.sharo.mcinema.userapi.vo.SceneRec;
+import com.github.pagehelper.PageHelper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
@@ -49,6 +50,7 @@ public class SceneController {
     })
     @RequestMapping(value = "/one/pk", method = RequestMethod.GET)
     public HttpRes sceneOneByPKHandler(@ApiIgnore @Validated({OneBy.PK.class}) SceneRec rec) {
+        PageHelper.clearPage();
         VScene scene = u_sceneBaseService.oneByPk(rec.getSceneId());
         return HttpResUtil.succeed("查询成功", scene);
     }

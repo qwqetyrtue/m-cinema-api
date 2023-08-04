@@ -9,6 +9,7 @@ import cn.hnist.sharo.mcinema.db.pojo.*;
 import cn.hnist.sharo.mcinema.db.pojo.custom.FilmCollectCount;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class U_FilmBaseService {
     @Resource
     FilmCustomMapper filmCustomMapper;
 
-    public PageInfo<FilmBase> listByUserCollect(Long userId, Short type, String filmType, PagingRec paging){
+    public PageInfo<FilmBase> listByUserCollect(Long userId, Short type, String filmType, PagingRec paging) {
         FilmBase.Column[] columns = {FilmBase.Column.filmId, FilmBase.Column.score, FilmBase.Column.actor, FilmBase.Column.name};
         FilmCollectExample.Criteria collectCri = FilmCollectExample.newAndCreateCriteria();
         collectCri.andUserIdEqualTo(userId);
@@ -36,44 +37,43 @@ public class U_FilmBaseService {
         for (FilmCollect collect : collects) {
             filmIds.add(collect.getFilmId());
         }
-        if(filmIds.size() > 0){
+        if (filmIds.size() > 0) {
             PageHelper.startPage(paging.getPageNum(), paging.getPageSize());
             FilmBaseExample.Criteria filmCri = FilmBaseExample.newAndCreateCriteria();
             filmCri.andFilmIdIn(filmIds);
             filmCri.andFilmTypeEqualTo(filmType);
-            List<FilmBase> list = filmBaseMapper.selectByExampleSelective(filmCri.example(),columns);
+            List<FilmBase> list = filmBaseMapper.selectByExampleSelective(filmCri.example(), columns);
             return new PageInfo<>(list);
-        }else{
+        } else {
             return new PageInfo<>();
         }
     }
 
-    public List<FilmCollectCount> countCollect(Long userId){
+    public List<FilmCollectCount> countCollect(Long userId) {
         FilmCollectExample.Criteria collectCri = FilmCollectExample.newAndCreateCriteria();
         collectCri.andUserIdEqualTo(userId);
         return filmCollectCustomMapper.countAllCollectGroup(userId);
     }
 
-    public FilmCollect oneByUserFilm(Long userId,Long filmId){
+    public FilmCollect oneByUserFilm(Long userId, Long filmId) {
         FilmCollectExample.Criteria collectCri = FilmCollectExample.newAndCreateCriteria();
         collectCri.andUserIdEqualTo(userId);
         collectCri.andFilmIdEqualTo(filmId);
         return filmCollectMapper.selectOneByExample(collectCri.example());
     }
 
-    public int insertCollect(FilmCollect collect){
+    public int insertCollect(FilmCollect collect) {
         return filmCollectMapper.insert(collect);
     }
 
     public List<FilmBase> listByType(String type) {
-        if("hot".equals(type))
+        if ("hot".equals(type))
             return filmCustomMapper.listHotFilm();
-        else if("soon".equals(type))
+        else if ("soon".equals(type))
             return filmCustomMapper.listSoonFilm();
-        else if("tobe".equals(type))
+        else if ("tobe".equals(type))
             return filmCustomMapper.listToBeFilm();
-        else
-        {
+        else {
             FilmBase.Column[] columns = {
                     FilmBase.Column.name,
                     FilmBase.Column.filmId,

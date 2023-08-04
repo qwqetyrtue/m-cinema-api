@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Api(tags = "座位查询接口")
 @ApiSupport(order = 9)
@@ -43,13 +44,13 @@ public class SeatController {
             @ApiImplicitParam(name = "sceneId", value = "场次编号", required = true),
     })
     @RequestMapping(value = "/list/reserved", method = RequestMethod.GET)
-    public HttpRes ticketOrderHandler(@ApiIgnore @Validated({ListBy.Owner.class}) TicketRec rec) {
+    public HttpRes listSeatReservedHandler(@ApiIgnore @Validated({ListBy.Owner.class}) TicketRec rec) {
         try {
             Set<String> keys = redisUtil.getKeys(seatRoot + rec.getSceneId() + ":*");
-            List<Integer> list = new ArrayList<>();
+            List<Object> list = new ArrayList<>();
             String[] array = keys.toArray(new String[0]);
             for (String each : array) {
-                list.addAll((ArrayList<Integer>) redisUtil.get(each));
+                list.addAll(redisUtil.sGet(each));
             }
             return HttpResUtil.succeed("查询成功", list);
         } catch (Exception e) {

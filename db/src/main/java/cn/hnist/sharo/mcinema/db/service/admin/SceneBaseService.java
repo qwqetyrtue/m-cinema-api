@@ -10,6 +10,7 @@ import cn.hnist.sharo.mcinema.db.dao.SceneBaseMapper;
 import cn.hnist.sharo.mcinema.db.dao.VSceneMapper;
 import cn.hnist.sharo.mcinema.db.pojo.*;
 import cn.hnist.sharo.mcinema.db.service.CRUDService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
